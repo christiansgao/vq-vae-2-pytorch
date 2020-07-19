@@ -13,6 +13,7 @@ from tqdm import tqdm
 from vqvae import VQVAE
 from scheduler import CycleScheduler
 import distributed as dist
+from Paths import Paths
 
 
 def train(epoch, loader, model, optimizer, scheduler, device):
@@ -82,7 +83,7 @@ def train(epoch, loader, model, optimizer, scheduler, device):
 
 
 def main(args):
-    device = "cuda"
+    device =  torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     args.distributed = dist.get_world_size() > 1
 
@@ -142,8 +143,9 @@ if __name__ == "__main__":
     parser.add_argument("--size", type=int, default=256)
     parser.add_argument("--epoch", type=int, default=560)
     parser.add_argument("--lr", type=float, default=3e-4)
+    parser.add_argument("--path", type=str, default=Paths.TRAINING)
+
     parser.add_argument("--sched", type=str)
-    parser.add_argument("path", type=str)
 
     args = parser.parse_args()
 
