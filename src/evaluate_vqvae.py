@@ -25,11 +25,10 @@ def load_model(checkooint):
     return model
 
 
-def evaluate(loader, model, out_path):
+def evaluate(loader, model, out_path, sample_size):
     if dist.is_primary():
         loader = tqdm(loader)
 
-    sample_size = 25
     model.eval()
 
     i, (img, label) = next(enumerate(loader))
@@ -77,7 +76,7 @@ def main(args):
             device_ids=[dist.get_local_rank()],
             output_device=dist.get_local_rank(),
         )
-    evaluate(loader, model, args.out_path)
+    evaluate(loader, model, args.out_path, args.sample_size)
 
 
 if __name__ == "__main__":
@@ -90,16 +89,11 @@ if __name__ == "__main__":
             + hash(os.getuid() if sys.platform != "win32" else 1) % 2 ** 14
     )
     parser.add_argument("--dist_url", default=f"tcp://127.0.0.1:{port}")
-
     parser.add_argument("--size", type=int, default=256)
-    parser.add_argument("--epoch", type=int, default=10)
-    parser.add_argument("--lr", type=float, default=3e-4)
-    parser.add_argument("--path", type=str, default=Paths.TRAINING)
-    parser.add_argument("--checkpoint", type=str, default=Paths.CHECKPOINT)
+    parser.add_argument("--sample_size", type=float, default=10)
+    parser.add_argument("--path", type=str, default=Paths.TRAINING_APARTMENT)
+    parser.add_argument("--checkpoint", type=str, default=Paths.CHECKPOINT_PRETRAINED)
     parser.add_argument("--out_path", type=str, default=Paths.EVAL_OUTPUT)
-
-    parser.add_argument("--sched", type=str)
-
     args = parser.parse_args()
 
     print(args)

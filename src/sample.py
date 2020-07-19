@@ -82,9 +82,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch', type=int, default=8)
-    parser.add_argument('--vqvae', type=str, default=Paths.CHECKPOINT)
-    parser.add_argument('--top', type=str, default=Paths.CHECKPOINT)
-    parser.add_argument('--bottom', type=str, default=Paths.CHECKPOINT)
+    parser.add_argument('--vqvae', type=str, default=Paths.CHECKPOINT_PRETRAINED)
+    parser.add_argument('--top', type=str, default=Paths.CHECKPOINT_PRETRAINED)
+    parser.add_argument('--bottom', type=str, default=Paths.CHECKPOINT_PRETRAINED)
     parser.add_argument('--temp', type=float, default=1.0)
     parser.add_argument('--filename', type=str, default= "test.png")
 
