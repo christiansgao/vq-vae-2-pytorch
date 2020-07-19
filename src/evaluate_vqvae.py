@@ -1,20 +1,19 @@
 import argparse
-import sys
 import os
+import sys
 
 import torch
 from torch import nn
 from torch.utils.data import DataLoader
-
 from torchvision import datasets, transforms, utils
-
 from tqdm import tqdm
 
-from src.vqvae import VQVAE
 import distributed as dist
 from src.Paths import Paths
+from src.vqvae import VQVAE
 
 DEVICE = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+
 
 def load_model(checkooint):
     ckpt = torch.load(checkooint, map_location=torch.device(DEVICE))
@@ -26,12 +25,10 @@ def load_model(checkooint):
     return model
 
 
-def evaluate(loader, model,out_path):
+def evaluate(loader, model, out_path):
     if dist.is_primary():
         loader = tqdm(loader)
 
-    criterion = nn.MSELoss()
-    latent_loss_weight = 0.25
     sample_size = 25
     model.eval()
 
@@ -50,8 +47,8 @@ def evaluate(loader, model,out_path):
         range=(-1, 1),
     )
 
-    #recon_loss = criterion(out, img)
-    #print("Loss: ",recon_loss)
+    # recon_loss = criterion(out, img)
+    # print("Loss: ",recon_loss)
 
 
 def main(args):
@@ -80,7 +77,7 @@ def main(args):
             device_ids=[dist.get_local_rank()],
             output_device=dist.get_local_rank(),
         )
-    evaluate(loader, model,args.out_path)
+    evaluate(loader, model, args.out_path)
 
 
 if __name__ == "__main__":
@@ -88,9 +85,9 @@ if __name__ == "__main__":
     parser.add_argument("--n_gpu", type=int, default=1)
 
     port = (
-        2 ** 15
-        + 2 ** 14
-        + hash(os.getuid() if sys.platform != "win32" else 1) % 2 ** 14
+            2 ** 15
+            + 2 ** 14
+            + hash(os.getuid() if sys.platform != "win32" else 1) % 2 ** 14
     )
     parser.add_argument("--dist_url", default=f"tcp://127.0.0.1:{port}")
 
