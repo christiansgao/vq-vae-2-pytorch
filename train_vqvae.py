@@ -13,7 +13,7 @@ from tqdm import tqdm
 from vqvae import VQVAE
 from scheduler import CycleScheduler
 import distributed as dist
-from Paths import Paths
+from src.Paths import Paths
 
 
 def train(epoch, loader, model, optimizer, scheduler, device):
@@ -141,7 +141,7 @@ if __name__ == "__main__":
     parser.add_argument("--dist_url", default=f"tcp://127.0.0.1:{port}")
 
     parser.add_argument("--size", type=int, default=256)
-    parser.add_argument("--epoch", type=int, default=560)
+    parser.add_argument("--epoch", type=int, default=10)
     parser.add_argument("--lr", type=float, default=3e-4)
     parser.add_argument("--path", type=str, default=Paths.TRAINING)
 

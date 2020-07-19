@@ -7,7 +7,11 @@ from tqdm import tqdm
 
 from vqvae import VQVAE
 from pixelsnail import PixelSNAIL
+from src.Paths import Paths
 
+########################################################
+# Creates sample of decoded model and saves as png image
+########################################################
 
 @torch.no_grad()
 def sample_model(model, device, batch, size, temperature, condition=None):
@@ -24,8 +28,9 @@ def sample_model(model, device, batch, size, temperature, condition=None):
     return row
 
 
-def load_model(model, checkpoint, device):
-    ckpt = torch.load(os.path.join('checkpoint', checkpoint))
+def load_model(model, checkpoint, device, channel):
+    checkooint_path = os.path.join('checkpoint', checkpoint)
+    ckpt = torch.load(checkooint_path)
 
     
     if 'args' in ckpt:
@@ -38,7 +43,7 @@ def load_model(model, checkpoint, device):
         model = PixelSNAIL(
             [32, 32],
             512,
-            args.channel,
+            channel,
             5,
             4,
             args.n_res_block,
@@ -73,15 +78,15 @@ def load_model(model, checkpoint, device):
 
 
 if __name__ == '__main__':
-    device = 'cuda'
+    device =  torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--batch', type=int, default=8)
-    parser.add_argument('--vqvae', type=str)
-    parser.add_argument('--top', type=str)
-    parser.add_argument('--bottom', type=str)
+    parser.add_argument('--vqvae', type=str, default=Paths.CHECKPOINT)
+    parser.add_argument('--top', type=str, default=Paths.CHECKPOINT)
+    parser.add_argument('--bottom', type=str, default=Paths.CHECKPOINT)
     parser.add_argument('--temp', type=float, default=1.0)
-    parser.add_argument('filename', type=str)
+    parser.add_argument('--filename', type=str, default= "test.png")
 
     args = parser.parse_args()
 
