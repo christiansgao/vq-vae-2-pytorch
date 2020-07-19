@@ -7,8 +7,8 @@ from torchvision import transforms
 import lmdb
 from tqdm import tqdm
 
-from dataset import ImageFileDataset, CodeRow
-from vqvae import VQVAE
+from src.dataset import ImageFileDataset, CodeRow
+from src.vqvae import VQVAE
 
 
 def extract(lmdb_env, loader, model, device):

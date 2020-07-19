@@ -5,8 +5,8 @@ import torch
 from torchvision.utils import save_image
 from tqdm import tqdm
 
-from vqvae import VQVAE
-from pixelsnail import PixelSNAIL
+from src.vqvae import VQVAE
+from src.pixelsnail import PixelSNAIL
 from src.Paths import Paths
 
 ########################################################

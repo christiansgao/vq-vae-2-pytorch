@@ -10,8 +10,8 @@ from torchvision import datasets, transforms, utils
 
 from tqdm import tqdm
 
-from vqvae import VQVAE
-from scheduler import CycleScheduler
+from src.vqvae import VQVAE
+from src.scheduler import CycleScheduler
 import distributed as dist
 from src.Paths import Paths
 

@@ -12,9 +12,9 @@ try:
 except ImportError:
     amp = None
 
-from dataset import LMDBDataset
-from pixelsnail import PixelSNAIL
-from scheduler import CycleScheduler
+from src.dataset import LMDBDataset
+from src.pixelsnail import PixelSNAIL
+from src.scheduler import CycleScheduler
 
 
 def train(args, epoch, loader, model, optimizer, scheduler, device):
